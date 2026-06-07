@@ -99,7 +99,7 @@ if [ ! -f "$GCX_CONFIG" ]; then
   warn "skipped — gcx config not found at $GCX_CONFIG"
 else
   SA_TOKEN=$(python3 -c \
-    "import yaml; c=yaml.safe_load(open('$GCX_CONFIG')); print(c['contexts']['$GCX_CONTEXT']['token'])" \
+    "import yaml; c=yaml.safe_load(open('$GCX_CONFIG')); ctx=c['contexts']['$GCX_CONTEXT']; print(ctx.get('token') or ctx.get('grafana',{}).get('token') or '')" \
     2>/dev/null || echo "")
   if [ -z "$SA_TOKEN" ]; then
     warn "skipped — could not read SA token from gcx config for context '$GCX_CONTEXT'"
